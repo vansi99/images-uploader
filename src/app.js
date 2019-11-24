@@ -11,7 +11,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(morgan('combined'));
-app.use("/images-resize",express.static('images-resize'));
+app.use("/images/images-resize",express.static('images-resize'));
 
 app.post("/images", multerMiddleware.upload.single('image'), async (req, res) => {
     try {
@@ -20,7 +20,7 @@ app.post("/images", multerMiddleware.upload.single('image'), async (req, res) =>
         }
         const filePathImage = `./images/${req.file.filename}`;
         const filePathImageResize = `./images-resize/${req.file.filename}`;
-        const url = req.protocol + '://' + hostname + filePathImageResize.slice(1,filePathImageResize.length);
+        const url = req.protocol + '://' + hostname + "/images" +filePathImageResize.slice(1,filePathImageResize.length);
         await multerMiddleware.resize(filePathImage, filePathImageResize);
         fs.unlinkSync(filePathImage);
         await res.json({
