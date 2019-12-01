@@ -1,5 +1,6 @@
 const multer = require("multer");
 const gm = require('gm').subClass({imageMagick: true});
+const path = require("path");
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -12,11 +13,12 @@ const storage = multer.diskStorage({
 
 
 const fileFilter = (req, file, cb) => {
-    if (file.mimetype === 'image/jpeg' ||
-        file.mimetype === 'image/png' ||
-        file.mimetype === 'image/jpg' ||
-        file.mimetype === 'image/gif' ||
-        file.mimetype === 'image/svg')
+    const extension = path.extname(file.originalname);
+    if (extension === '.jpeg' ||
+        extension === '.png' ||
+        extension === '.jpg' ||
+        extension === '.gif' ||
+        extension === '.svg')
         cb(null, true);
     else cb(new Error('file is not image'), false);
 };
