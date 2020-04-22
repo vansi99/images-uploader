@@ -1,1 +1,0 @@
-Thư mục resize lại ảnh

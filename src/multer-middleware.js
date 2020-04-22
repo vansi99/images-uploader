@@ -18,7 +18,8 @@ const fileFilter = (req, file, cb) => {
         extension === '.png' ||
         extension === '.jpg' ||
         extension === '.gif' ||
-        extension === '.svg')
+        extension === '.svg' ||
+        extension === '.JPG')
         cb(null, true);
     else cb(new Error('file is not image'), false);
 };
