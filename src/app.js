@@ -2,8 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const multerMiddleware = require("./multer-middleware");
 const morgan = require("morgan");
+const hostname = process.env.HOSTNAME;
 const fs = require("fs");
-const Imgur = require("imgur");
 
 const port = process.env.PORT || 5000;
 const app = express();
@@ -11,6 +11,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(morgan('combined'));
+app.use("/images",express.static('images'));
 
 app.post("/", multerMiddleware.upload.single('image'), async (req, res) => {
     try {
@@ -18,9 +19,7 @@ app.post("/", multerMiddleware.upload.single('image'), async (req, res) => {
             throw new Error("file is missing")
         }
         const filePathImage = `./images/${req.file.filename}`;
-        const imgurRes = await Imgur.uploadFile(filePathImage);
-        const url = imgurRes.data.link;
-        fs.unlinkSync(filePathImage);
+        const url = req.protocol + '://' + hostname + filePathImage.slice(1,filePathImage.length);
         await res.json({
             success: true,
             data: {url}
