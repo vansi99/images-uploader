@@ -19,7 +19,7 @@ app.post("/", multerMiddleware.upload.single('image'), async (req, res) => {
             throw new Error("file is missing")
         }
         const filePathImage = `./images/${req.file.filename}`;
-        const url = req.protocol + '://' + hostname + filePathImage.slice(1,filePathImage.length);
+        const url ='https://' + hostname + filePathImage.slice(1,filePathImage.length);
         await res.json({
             success: true,
             data: {url}
